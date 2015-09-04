@@ -65,4 +65,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
+  config.vm.define :minion3 do |minion_config|
+    minion_config.vm.box = "mwrock/Windows2012R2"
+    # Disable automatic box update checking. If you disable this, then
+    # boxes will only be checked for updates when the user runs
+    # `vagrant box outdated`. This is not recommended.
+    # config.vm.box_check_update = false
+    minion_config.vm.box_check_update = false
+    config.vm.network "private_network", ip: "192.168.50.13"
+    # Update the Salt Minion installer in the winshare directory and update the
+    # https://repo.saltstack.com/windows/
+    # name here:
+    config.vm.provision "shell", inline: <<-SHELL
+      winshare\\Salt-Minion-2015.8.0rc4-AMD64-Setup.exe /S /master=192.168.50.10 /minion-name=winion1
+      SHELL
+    end
+  end
+
 end
