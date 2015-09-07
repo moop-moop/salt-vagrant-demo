@@ -32,3 +32,7 @@ using Salt.
 
     vagrant ssh master
     sudo salt \* test.ping
+Notes
+=====
+The Windows minions (winions) are Windows Server 2012 R2 Hyper V Vagrant boxes from here:
+https://github.com/msabramo/vagrant_hyperv_server_free
