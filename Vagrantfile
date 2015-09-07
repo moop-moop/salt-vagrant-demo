@@ -70,7 +70,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # end
 
   config.vm.define :winion1 do |minion_config|
-    # minion_config.vm.box = "mwrock/Windows2012R2"
     minion_config.vm.box = "msabramo/HyperVServer2012"
     #minion_config.vm.host_name = 'saltwinion1'
     # Disable automatic box update checking. If you disable this, then
@@ -92,7 +91,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define :winion2 do |minion_config|
     minion_config.vm.box = "msabramo/HyperVServer2012"
-    #minion_config.vm.host_name = 'saltwinion2'
     minion_config.vm.network "private_network", ip: "192.168.50.14"
     minion_config.vm.network "forwarded_port", guest: 3389, host: 3389, id: "rdp", auto_correct: true
     minion_config.vm.provision :salt do |salt|
