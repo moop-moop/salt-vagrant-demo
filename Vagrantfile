@@ -8,7 +8,7 @@ SALT_VERSION = "2015.8.0rc3"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define :master do |master_config|
     master_config.vm.box = "ubuntu/trusty64"
-    master_config.vm.host_name = 'saltmaster.local'
+    master_config.vm.hostname = 'saltmaster.local'
     master_config.vm.network "private_network", ip: "192.168.50.10"
     master_config.vm.synced_folder "saltstack/salt/", "/srv/salt"
 
@@ -32,22 +32,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  # config.vm.define :minion1 do |minion_config|
-  #   minion_config.vm.box = "ubuntu/trusty64"
-  #   minion_config.vm.host_name = 'saltminion1.local'
-  #   minion_config.vm.network "private_network", ip: "192.168.50.11"
-
-  #   minion_config.vm.provision :salt do |salt|
-  #     salt.minion_config = "saltstack/etc/minion1"
-  #     salt.minion_key = "saltstack/keys/minion1.pem"
-  #     salt.minion_pub = "saltstack/keys/minion1.pub"
-  #     salt.install_type = "git"
-  #     salt.install_args = "v" + SALT_VERSION
-  #     salt.verbose = true
-  #     salt.colorize = true
-  #     salt.bootstrap_options = "-P"
-  #   end
-  # end
+  config.vm.define :minion1 do |minion_config|
+    minion_config.vm.box = "ubuntu/trusty64"
+    minion_config.vm.hostname = 'saltminion1.local'
+    minion_config.vm.network "private_network", ip: "192.168.50.11"
+    minion_config.vm.provision :salt do |salt|
+      salt.minion_config = "saltstack/etc/minion1"
+      salt.minion_key = "saltstack/keys/minion1.pem"
+      salt.minion_pub = "saltstack/keys/minion1.pub"
+      salt.install_type = "git"
+      salt.install_args = "v" + SALT_VERSION
+      #salt.install_type = "stable"
+      salt.verbose = true
+      salt.colorize = true
+      #salt.bootstrap_options = "-P"
+      salt.bootstrap_options = "-F -c /tmp/ -P"
+    end
+  end
 
   # config.vm.define :minion2 do |minion_config|
   #   minion_config.vm.box = "ubuntu/trusty64"
@@ -55,7 +56,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   # instead of Ubuntu.
   #   # Comment out the above line as well
   #   #minion_config.vm.box = "chef/centos-6.5"
-  #   minion_config.vm.host_name = 'saltminion2.local'
+  #   minion_config.vm.hostname = 'saltminion2.local'
   #   minion_config.vm.network "private_network", ip: "192.168.50.12"
 
   #   minion_config.vm.provision :salt do |salt|
