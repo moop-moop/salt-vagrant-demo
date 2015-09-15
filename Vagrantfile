@@ -3,7 +3,8 @@
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
-SALT_VERSION = "2015.8.0rc3"
+WIN_SALT_VERSION = "2015.8.0-3"
+SALT_VERSION = "2015.8.0"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define :master do |master_config|
@@ -11,12 +12,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     master_config.vm.hostname = 'saltmaster.local'
     master_config.vm.network "private_network", ip: "192.168.50.10"
     master_config.vm.synced_folder "saltstack/salt/", "/srv/salt"
-
     master_config.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 2
     end
-
     master_config.vm.provision :salt do |salt|
       salt.master_config = "saltstack/etc/master"
       salt.master_key = "saltstack/keys/master_minion.pem"
@@ -47,11 +46,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       salt.minion_pub = "saltstack/keys/minion1.pub"
       salt.install_type = "git"
       salt.install_args = "v" + SALT_VERSION
-      #salt.install_type = "stable"
       salt.verbose = true
       salt.colorize = true
       #salt.bootstrap_options = "-P"
       salt.bootstrap_options = "-F -c /tmp/ -P"
+    end
+    minion_config.vm.provider "virtualbox" do |v|
+      v.gui = false
     end
   end
 
@@ -85,13 +86,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #minion_config.vm.box_check_update = false
     minion_config.vm.network "private_network", ip: "192.168.50.13"
     minion_config.vm.network "forwarded_port", guest: 3389, host: 3389, id: "rdp", auto_correct: true
+    minion_config.vbguest.auto_update = false
     minion_config.vm.provision :salt do |salt|
       salt.version = SALT_VERSION
       salt.minion_config = "saltstack/etc/winion1"
       salt.minion_key = "saltstack/keys/winion1.pem"
       salt.minion_pub = "saltstack/keys/winion1.pub"
       salt.minion_id = "winion1"
+      salt.verbose = true
+      salt.colorize = true
       salt.run_highstate = true
+    end
+    minion_config.vm.provider "virtualbox" do |v|
+      v.gui = false
     end
   end
 
@@ -99,13 +106,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     minion_config.vm.box = "msabramo/HyperVServer2012"
     minion_config.vm.network "private_network", ip: "192.168.50.14"
     minion_config.vm.network "forwarded_port", guest: 3389, host: 3389, id: "rdp", auto_correct: true
+    minion_config.vbguest.auto_update = false
     minion_config.vm.provision :salt do |salt|
-      salt.version = SALT_VERSION
+      salt.version = WIN_SALT_VERSION
       salt.minion_config = "saltstack/etc/winion2"
       salt.minion_key = "saltstack/keys/winion2.pem"
       salt.minion_pub = "saltstack/keys/winion2.pub"
       salt.minion_id = "winion2"
+      salt.verbose = true
+      salt.colorize = true
       salt.run_highstate = true
+    end
+    minion_config.vm.provider "virtualbox" do |v|
+      v.gui = false
     end
   end
 
