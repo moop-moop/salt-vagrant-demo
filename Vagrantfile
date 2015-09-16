@@ -20,6 +20,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       salt.master_config = "saltstack/etc/master"
       salt.master_key = "saltstack/keys/master_minion.pem"
       salt.master_pub = "saltstack/keys/master_minion.pub"
+      salt.minion_key = "saltstack/keys/master_minion.pem"
+      salt.minion_pub = "saltstack/keys/master_minion.pub"
       salt.seed_master = {
                           "minion1" => "saltstack/keys/minion1.pub",
                           "minion2" => "saltstack/keys/minion2.pub",
@@ -32,7 +34,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       salt.no_minion = true
       salt.verbose = true
       salt.colorize = true
-      salt.bootstrap_options = "-P"
+      salt.bootstrap_options = "-P -c /tmp"
     end
   end
 
@@ -48,7 +50,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       salt.install_args = "v" + SALT_VERSION
       salt.verbose = true
       salt.colorize = true
-      salt.bootstrap_options = "-F -c /tmp/ -P"
+      salt.bootstrap_options = "-P -c /tmp"
     end
   end
 
@@ -60,7 +62,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #minion_config.vm.box = "chef/centos-6.5"
     minion_config.vm.hostname = 'saltminion2.local'
     minion_config.vm.network "private_network", ip: "192.168.50.12"
-
     minion_config.vm.provision :salt do |salt|
       salt.minion_config = "saltstack/etc/minion2"
       salt.minion_key = "saltstack/keys/minion2.pem"
@@ -69,7 +70,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       salt.install_args = "v" + SALT_VERSION
       salt.verbose = true
       salt.colorize = true
-      salt.bootstrap_options = "-F -c /tmp/ -P"
+      salt.bootstrap_options = "-P -c /tmp"
     end
   end
 
