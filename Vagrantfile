@@ -42,6 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     minion_config.vm.box = "ubuntu/trusty64"
     minion_config.vm.hostname = 'saltminion1.local'
     minion_config.vm.network "private_network", ip: "192.168.50.11"
+
     minion_config.vm.provision :salt do |salt|
       salt.minion_config = "saltstack/etc/minion1"
       salt.minion_key = "saltstack/keys/minion1.pem"
@@ -62,6 +63,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #minion_config.vm.box = "chef/centos-6.5"
     minion_config.vm.hostname = 'saltminion2.local'
     minion_config.vm.network "private_network", ip: "192.168.50.12"
+
     minion_config.vm.provision :salt do |salt|
       salt.minion_config = "saltstack/etc/minion2"
       salt.minion_key = "saltstack/keys/minion2.pem"
@@ -79,6 +81,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     winion_config.vm.network "private_network", ip: "192.168.50.13"
     winion_config.vm.network "forwarded_port", guest: 3389, host: 3389, id: "rdp", auto_correct: true
     winion_config.vbguest.auto_update = false
+
     winion_config.vm.provision :salt do |salt|
       salt.version = WIN_SALT_VERSION
       salt.minion_config = "saltstack/etc/winion1"
@@ -89,6 +92,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       salt.colorize = true
       salt.run_highstate = true
     end
+    
     winion_config.vm.provider "virtualbox" do |v|
       v.gui = false
     end
@@ -99,6 +103,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     winion_config.vm.network "private_network", ip: "192.168.50.14"
     winion_config.vm.network "forwarded_port", guest: 3389, host: 3389, id: "rdp", auto_correct: true
     winion_config.vbguest.auto_update = false
+
     winion_config.vm.provision :salt do |salt|
       salt.version = WIN_SALT_VERSION
       salt.minion_config = "saltstack/etc/winion2"
@@ -109,6 +114,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       salt.colorize = true
       salt.run_highstate = true 
     end
+
     winion_config.vm.provider "virtualbox" do |v|
       v.gui = false
     end
