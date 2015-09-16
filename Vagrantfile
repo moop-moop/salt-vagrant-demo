@@ -42,6 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     minion_config.vm.box = "ubuntu/trusty64"
     minion_config.vm.hostname = 'saltminion1.local'
     minion_config.vm.network "private_network", ip: "192.168.50.11"
+    minion_config.vbguest.auto_update = false
 
     minion_config.vm.provision :salt do |salt|
       salt.minion_config = "saltstack/etc/minion1"
@@ -63,6 +64,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #minion_config.vm.box = "chef/centos-6.5"
     minion_config.vm.hostname = 'saltminion2.local'
     minion_config.vm.network "private_network", ip: "192.168.50.12"
+    minion_config.vbguest.auto_update = false
 
     minion_config.vm.provision :salt do |salt|
       salt.minion_config = "saltstack/etc/minion2"
@@ -92,7 +94,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       salt.colorize = true
       salt.run_highstate = true
     end
-    
+
     winion_config.vm.provider "virtualbox" do |v|
       v.gui = false
     end
