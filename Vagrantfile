@@ -88,7 +88,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     minion_config.vm.network "forwarded_port", guest: 3389, host: 3389, id: "rdp", auto_correct: true
     minion_config.vbguest.auto_update = false
     minion_config.vm.provision :salt do |salt|
-      salt.version = SALT_VERSION
+      salt.version = WIN_SALT_VERSION
       salt.minion_config = "saltstack/etc/winion1"
       salt.minion_key = "saltstack/keys/winion1.pem"
       salt.minion_pub = "saltstack/keys/winion1.pub"
