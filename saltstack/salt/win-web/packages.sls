@@ -4,7 +4,6 @@ update_win_repo:
 win-web_packages:
   pkg.installed:
     - pkgs:
-      - 7zip
       - ms-vc10-redistributable-2010
       - ms-vc11-redistributable-2012
       - ms-vc14-redistributable-2015

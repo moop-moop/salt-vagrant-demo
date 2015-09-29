@@ -1,0 +1,8 @@
+name: apachelounge
+os: Windows
+os_family: Windows
+version: 2.4.16
+release: 1
+minimum_version: 2015.8
+summary: Formula for installing Apachelounge.com version of Apache
+description: Formula for installing Apachelounge.com version of Apache web server on Windows
