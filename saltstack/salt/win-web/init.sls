@@ -1,3 +1,4 @@
 include:
-  - win-web.packages
   - apachelounge
+  #- PHP
+  #- MySQL

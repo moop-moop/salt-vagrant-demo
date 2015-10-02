@@ -1,5 +1,6 @@
 include:
   - unzip
+  - win-web.packages
 
 install apachelounge from zip:
   archive.extracted:
@@ -8,6 +9,5 @@ install apachelounge from zip:
     - source_hash: sha256=467bf6136d1d8cf1f6ca2d61bd6c64c115cf9eb133a50835b6e8cdfdda1d1d04
     - archive_format: zip
     - require:
-      - unzip
-      - pkg.installed:
-        - ms-vc14-redistributable-2015
+      - file: install unzip from download
+      - pkg: install ms vc redistributables
