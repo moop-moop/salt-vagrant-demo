@@ -3,12 +3,12 @@
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
-WIN_SALT_VERSION = "2015.8.0-3"
-SALT_VERSION = "2015.8.0"
+WIN_SALT_VERSION = "2015.8.7"
+#SALT_VERSION = "2015.8.7"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define :master do |master_config|
-    master_config.vm.box = "ubuntu/trusty64"
+    master_config.vm.box = "centos/7"
     master_config.vm.hostname = 'saltmaster.local'
     master_config.vm.network "private_network", ip: "192.168.50.10"
     master_config.vm.synced_folder "saltstack/salt/", "/srv/salt"
@@ -25,8 +25,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                           "winion1" => "saltstack/keys/winion1.pub",
                           "winion2" => "saltstack/keys/winion2.pub"
                          }
-      salt.install_type = "git"
-      salt.install_args = "v" + SALT_VERSION
+      if defined? SALT_VERSION
+        salt.install_type = "git"
+        salt.install_args = "v" + SALT_VERSION
+      else
+        salt.install_type = "stable"
+      end
       salt.install_master = true
       salt.no_minion = true
       salt.verbose = true
@@ -36,7 +40,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define :minion1 do |minion_config|
-    minion_config.vm.box = "ubuntu/trusty64"
+    minion_config.vm.box = "centos/7"
     minion_config.vm.hostname = 'saltminion1.local'
     minion_config.vm.network "private_network", ip: "192.168.50.11"
     minion_config.vbguest.auto_update = false
@@ -45,8 +49,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       salt.minion_config = "saltstack/etc/minion1"
       salt.minion_key = "saltstack/keys/minion1.pem"
       salt.minion_pub = "saltstack/keys/minion1.pub"
-      salt.install_type = "git"
-      salt.install_args = "v" + SALT_VERSION
+      if defined? SALT_VERSION
+        salt.install_type = "git"
+        salt.install_args = "v" + SALT_VERSION
+      else
+        salt.install_type = "stable"
+      end
       salt.verbose = true
       salt.colorize = true
       salt.bootstrap_options = "-P -c /tmp"
@@ -54,7 +62,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define :minion2 do |minion_config|
-    minion_config.vm.box = "ubuntu/trusty64"
+    minion_config.vm.box = "centos/7"
     # The following line can be uncommented to use Centos
     # instead of Ubuntu.
     # Comment out the above line as well
@@ -67,8 +75,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       salt.minion_config = "saltstack/etc/minion2"
       salt.minion_key = "saltstack/keys/minion2.pem"
       salt.minion_pub = "saltstack/keys/minion2.pub"
-      salt.install_type = "git"
-      salt.install_args = "v" + SALT_VERSION
+      if defined? SALT_VERSION
+        salt.install_type = "git"
+        salt.install_args = "v" + SALT_VERSION
+      else
+        salt.install_type = "stable"
+      end
       salt.verbose = true
       salt.colorize = true
       salt.bootstrap_options = "-P -c /tmp"
@@ -77,9 +89,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define :winion1 do |winion_config|
     winion_config.vm.box = "msabramo/HyperVServer2012"
-    winion_config.vm.network "private_network", ip: "192.168.50.13"
+    winion_config.vm.network "private_network", ip: "192.168.50.21"
     winion_config.vm.network "forwarded_port", guest: 3389, host: 3389, id: "rdp", auto_correct: true
     winion_config.vbguest.auto_update = false
+    winion_config.vm.boot_timeout = 600
 
     winion_config.vm.provision :salt do |salt|
       salt.version = WIN_SALT_VERSION
@@ -90,15 +103,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       salt.verbose = true
       salt.colorize = true
     end
+ 
+    winion_config.vm.provision "shell" do |s|
+      s.inline = "Restart-Service -Name salt-minion -PassThru"
+    end
 
     winion_config.vm.provider "virtualbox" do |v|
-      v.gui = false
+      v.gui = true
     end
   end
 
   config.vm.define :winion2 do |winion_config|
     winion_config.vm.box = "msabramo/HyperVServer2012"
-    winion_config.vm.network "private_network", ip: "192.168.50.14"
+    winion_config.vm.network "private_network", ip: "192.168.50.22"
     winion_config.vm.network "forwarded_port", guest: 3389, host: 3389, id: "rdp", auto_correct: true
     winion_config.vbguest.auto_update = false
 
