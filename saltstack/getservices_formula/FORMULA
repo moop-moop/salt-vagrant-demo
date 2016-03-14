@@ -1,8 +1,0 @@
-name: getservices
-os: Windows
-os_family: Windows
-version: 1.0
-release: 1
-minimum_version: 2015.8
-summary: return a list of Windows services
-description: return a list of Windows services
