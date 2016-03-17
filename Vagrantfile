@@ -45,8 +45,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     minion_config.vm.box = "centos/7" #box-cutter/fedora23 
     minion_config.vm.hostname = 'saltminion1.local'
     minion_config.vm.network "private_network", ip: "192.168.50.11"
-    minion_config.vbguest.auto_update = false
-
+    if Vagrant.has_plugin?("vbguest")
+      minion_config.vbguest.auto_update = false
+    end  
     minion_config.vm.provision :salt do |salt|
       salt.minion_config = "saltstack/etc/minion1"
       salt.minion_key = "saltstack/keys/minion1.pem"
@@ -71,7 +72,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #minion_config.vm.box = "chef/centos-6.5"
     minion_config.vm.hostname = 'saltminion2.local'
     minion_config.vm.network "private_network", ip: "192.168.50.12"
-    minion_config.vbguest.auto_update = false
+    if Vagrant.has_plugin?("vbguest")
+      minion_config.vbguest.auto_update = false
+    end  
 
     minion_config.vm.provision :salt do |salt|
       salt.minion_config = "saltstack/etc/minion2"
@@ -93,7 +96,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     winion_config.vm.box = "msabramo/HyperVServer2012"
     winion_config.vm.network "private_network", ip: "192.168.50.21"
     winion_config.vm.network "forwarded_port", guest: 3389, host: 3389, id: "rdp", auto_correct: true
-    winion_config.vbguest.auto_update = false
+    if Vagrant.has_plugin?("vbguest")
+      winion_config.vbguest.auto_update = false
+    end  
     winion_config.vm.boot_timeout = 600
 
     winion_config.vm.provision :salt do |salt|
@@ -119,7 +124,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     winion_config.vm.box = "msabramo/HyperVServer2012"
     winion_config.vm.network "private_network", ip: "192.168.50.22"
     winion_config.vm.network "forwarded_port", guest: 3389, host: 3389, id: "rdp", auto_correct: true
-    winion_config.vbguest.auto_update = false
+    if Vagrant.has_plugin?("vbguest")
+      winion_config.vbguest.auto_update = false
+    end
+    winion_config.vm.boot_timeout = 600
 
     winion_config.vm.provision :salt do |salt|
       salt.version = WIN_SALT_VERSION
