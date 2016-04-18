@@ -2,4 +2,4 @@ base:
   'minion*':
     - common
   'winion1':
-    - newrelic-javaagent
+    - win_newrelic_javaagent

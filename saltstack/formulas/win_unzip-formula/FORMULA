@@ -1,4 +1,4 @@
-name: unzip
+name: win_unzip
 os: Windows
 os_family: Windows
 version: 5.52

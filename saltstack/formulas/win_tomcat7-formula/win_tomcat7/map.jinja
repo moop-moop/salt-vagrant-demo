@@ -1,0 +1,6 @@
+{% set t7 = salt['grains.filter_by']({
+    'Windows': {
+        'version': '7.0.68',
+        'install_path': 'C:\\'
+    }
+}, grain='os_family', merge=salt['pillar.get']('tomcat7'), default='Windows') %}

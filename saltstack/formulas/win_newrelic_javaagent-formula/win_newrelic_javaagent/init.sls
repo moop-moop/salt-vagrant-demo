@@ -1,9 +1,9 @@
-{%- from 'newrelic-javaagent/map.jinja' import newrelic with context %}
+{%- from 'win_newrelic_javaagent/map.jinja' import newrelic with context %}
 {%- set current_version =  salt['grains.get']('newrelic-javaagent:version',None) %}
 {%- set current_path = salt['grains.get']('newrelic-javaagent:install_path',None) %}
 
 include:
-  - unzip
+  - win_unzip
 
 {%- if current_version != None and current_path != None and newrelic.version > current_version %}
 # #remove old folder making sure tomat services stopped, use newrelic tomact instance list grains to stop
@@ -74,7 +74,7 @@ newrelic-javaagent configure enable_auto_app_naming:
       - archive: install newrelic-javaagent from download
 {%- endif %}
 
-{%- if current_version != None and current_path != None and newrelic.version > current_version %}
+{%- if newrelic.version != None and newrelic.install_path != None and newrelic.version > current_version %}
 set newrelic-javaagent grains:
   grains.present:
     - name: newrelic-javaagent
