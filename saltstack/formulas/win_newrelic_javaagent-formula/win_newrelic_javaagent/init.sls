@@ -36,7 +36,7 @@ install newrelic-javaagent from download:
 
 newrelic-javaagent configure app_name:
   file.replace:
-  - name: c:\newrelic\newrelic.yml
+  - name: {{newrelic.install_path}}newrelic\newrelic.yml
   - flags:
     - IGNORECASE
     - MULTILINE
@@ -49,7 +49,7 @@ newrelic-javaagent configure app_name:
 {%- if newrelic.high_security is defined %}
 newrelic-javaagent configure high_security:
   file.replace:
-  - name: c:\newrelic\newrelic.yml
+  - name: {{newrelic.install_path}}newrelic\newrelic.yml
   - flags:
     - IGNORECASE
     - MULTILINE
@@ -63,7 +63,7 @@ newrelic-javaagent configure high_security:
 {%- if newrelic.enable_auto_app_naming is defined %}
 newrelic-javaagent configure enable_auto_app_naming:
   file.replace:
-  - name: c:\newrelic\newrelic.yml
+  - name: {{newrelic.install_path}}newrelic\newrelic.yml
   - flags:
     - IGNORECASE
     - MULTILINE
