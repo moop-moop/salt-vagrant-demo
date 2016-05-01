@@ -1,7 +1,0 @@
-{% set newrelic = salt['grains.filter_by']({
-    'Windows': {
-        'app_name': grains['id'],
-        'version': '3.27.0',
-        'install_path': 'C:\\'
-    }
-}, grain='os_family', merge=salt['pillar.get']('newrelic'), default='Windows') %}

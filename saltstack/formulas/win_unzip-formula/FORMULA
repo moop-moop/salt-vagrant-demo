@@ -1,8 +1,0 @@
-name: win_unzip
-os: Windows
-os_family: Windows
-version: 5.52
-release: 1
-minimum_version: 2015.8
-summary: Formula for installing Windows unzip
-description: Formula for installing Windows version of unzip commandline utility

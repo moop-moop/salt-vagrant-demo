@@ -3,18 +3,17 @@
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
-WIN_SALT_VERSION = "2015.8.7"
+WIN_SALT_VERSION = "2015.8.8-2"
 #SALT_VERSION = "2015.8.7"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define :master do |master_config|
-    master_config.vm.box = "centos/7" #box-cutter/fedora23 
+    master_config.vm.box = "centos/7"
     master_config.vm.hostname = 'saltmaster.local'
     master_config.vm.network "private_network", ip: "192.168.50.10"
-    master_config.vm.synced_folder "saltstack/salt/", "/srv/salt"
-    master_config.vm.synced_folder "saltstack/pillar/", "/srv/pillar"
-    master_config.vm.synced_folder "saltstack/formulas/", "/srv/formulas"
-    master_config.vm.synced_folder "saltstack/etc/master.d/", "/etc/salt/master.d"
+    master_config.vm.synced_folder "../saltstack/salt/", "/srv/salt"
+    master_config.vm.synced_folder "../saltstack/pillar/", "/srv/pillar"
+    master_config.vm.synced_folder "../saltstack/master.d/", "/etc/salt/master.d"
     if Vagrant.has_plugin?("vagrant-vbguest")
       master_config.vbguest.auto_update = true
     end
@@ -45,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define :minion1 do |minion_config|
-    minion_config.vm.box = "centos/7" #box-cutter/fedora23 
+    minion_config.vm.box = "centos/7"
     minion_config.vm.hostname = 'saltminion1.local'
     minion_config.vm.network "private_network", ip: "192.168.50.11"
     if Vagrant.has_plugin?("vagrant-vbguest")
